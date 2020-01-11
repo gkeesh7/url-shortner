@@ -31,7 +31,7 @@ func StartServer() {
 			Addr:           "0.0.0.0:8080",
 			Handler:        r,
 			ReadTimeout:    10 * time.Second,
-			WriteTimeout:   10 * time.Second,
+			WriteTimeout:   50 * time.Second,
 			MaxHeaderBytes: 1 << 20,
 		},
 		ShutdownInitiated: func() {

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
+	"net/http/pprof"
 	"url-shortner/api"
 )
 
@@ -19,4 +20,11 @@ func UrlShortnerAPIs(router *mux.Router) {
 	router.HandleFunc("/shorten", api.ShortenURL).Methods("POST")
 	//Stats API's for URL clicks
 	router.HandleFunc("/stats", api.Stats).Methods("GET")
+
+	//PProf apis
+	router.HandleFunc("/debug/pprof/", pprof.Index)
+	router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	router.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	router.HandleFunc("/debug/pprof/trace", pprof.Trace)
 }
