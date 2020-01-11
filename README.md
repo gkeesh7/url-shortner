@@ -98,16 +98,89 @@ For unit testing you can run the go test command and get the test coverage for t
 go test ./... -cover
 ```
 As we can see that the logic and and utils are fairly well covered with unit Test Cases 
+
 ![](resources/images/test_coverage.png)
 
+For running a perf test you can execute the following go test command when the Service is running and it would execute a sample stress test on the running web service
+```bash
+go test resources/perftest/perf_test.go -v
+```
+
+As we can see that the backend took 0.5 seconds to shorten 1000 URLs 
+
+![](resources/images/perf_test_result.png)
+
+You can tinker around with the given perf test which doesn't use any Performance testing framework, just plain Golang concurrency primitives 
+
+## Rest APIs
+The following are rest APIs that the service provides
+
+
+To redirect from the shortened url_id to actual long URL 
+```bash
+curl -X GET \
+  http://localhost:8080/redirect/{url_id} \
+  -H 'cache-control: no-cache' 
+``` 
+
+To shorten a URL 
+```bash
+curl -X POST \
+  http://localhost:8080/shorten \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"url":"https://www.google.com/search?q=do+a+barrel+roll",
+	"request_id":"asdlfjhlaksdjffsajkflkjghjasfflkg"
+}'
+```
+The JSON response format for the above Curl would  be like
+```json
+{
+    "request_id": "asdlfjhlaksdjffsajkflkjghjasfflkg",
+    "short_url": "http://0.0.0.0:8080/redirect/POnv0XFu9P",
+    "redirect_url": "https://www.google.com/search?q=do+a+barrel+roll",
+    "expiry": "2020-01-12T19:45:51.295175+05:30"
+}
+```
+
+To get URL opening stats (top 10 most frequently visited URLs in the last 24 hours in descending order)
+````bash
+curl -X GET \
+  http://localhost:8080/stats \
+  -H 'cache-control: no-cache' 
+````
+
+The JSON response format for the above Curl would be like
+```json
+{
+    "message": "The most frequent URL clicks/redirects in last 24 hours",
+    "url_stats": [
+        {
+            "url": "http://0.0.0.0:8080/redirect/POnv0XFu9P",
+            "count": 4
+        },
+        {
+            "url": "http://0.0.0.0:8080/redirect/vYyVeiUtUd",
+            "count": 3
+        },
+        {
+            "url": "http://0.0.0.0:8080/redirect/test",
+            "count": 1
+        }
+    ]
+}
+```
 
 ## Design
 
 
 ## Contributing
-
-
-
+Pull requests are welcome a few features that are in the TODO pipeline include 
+1. Addition of Cache to reduce redirection search time
+2. Implementation of a distributed lock before execution of delete queries by Cron
+3. Addition of metrics like graphite etc.
+4. Making the Backend more configurable.
 
 
 
