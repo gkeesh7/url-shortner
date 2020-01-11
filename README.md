@@ -1,0 +1,115 @@
+# URL-Shortner
+This is a Url Shortening Web Service similar to the likes of [bit.ly](https://bit.ly), [tinyurl.com](https://tinyurl.com/) or [goo.gl](https://goo.gl) albeit highly simplified
+
+Features include
+1. An API to shorten a long URL into a smaller unique URL or alias.
+2. Redirection to the original long URL if the short url is accessed.
+3. Automatic Expiration and Deletion of old URLs once expiration time is reached.
+4. Fairly scalable backend that can shorten thousands of Long URLs a second (documented in perf test).
+
+## Installation and Getting Started
+#### Package management
+The project uses [Glide](https://glide.sh/) for Package Management.
+
+Please follow the link in order install and configure glide for your system
+
+After you're done installing Glide execute the glide up command to get the required packages once you're in the url-shortner directory 
+
+```bash
+glide up
+```
+#### Database Schema Creation
+The application uses a [Mysql](https://dev.mysql.com/downloads/installer/) based Persistent Data Store and connects to it once booting up. 
+
+It's hence necessary that mysql is running on your machine and the corresponding Table schema is pre-existing in your Database.
+
+Please follow the link in order install and configure MYSQL for your system
+
+Execute the following SQL script in your Mysql shell in order to create the necessary schema 
+
+```mysql
+CREATE DATABASE url_shortner;
+
+USE url_shortner;
+
+DROP TABLE IF EXISTS `redirection`;
+
+CREATE TABLE `redirection`
+(
+    `id`         INT(11)       NOT NULL AUTO_INCREMENT,
+    `url_id`     varchar(20)   NOT NULL UNIQUE,
+    `url`        varchar(1024) NOT NULL,
+    `created_at` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `expiry`     TIMESTAMP     NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+
+DROP TABLE IF EXISTS `url_stats`;
+
+CREATE TABLE `url_stats`
+(
+    `id`         INT(11)     NOT NULL AUTO_INCREMENT,
+    `url_id`     varchar(20) NOT NULL,
+    `count`      INT(11)     NOT NULL,
+    `created_at` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `redirection` (`id`, `url_id`, `url`, `created_at`, `updated_at`, `expiry`) VALUES ('1', 'test', 'https://youtu.be/dQw4w9WgXcQ?t=43', '2020-01-08 14:05:37', '2020-01-08 14:05:37', '2030-01-19 14:05:37');
+```
+The above SQL script can also be found in the resources package for reference 
+`resources/sql_scripts/url_shortner.sql`
+
+In case you need to configure DSN for your local MYSQL installation. 
+
+Please do remember to make changes into
+`config/database/gorm.go`
+
+The default DSN given is 
+``"root:@tcp(localhost:3306)/url_shortner?parseTime=true"``
+
+####  Running the Web Service
+Since the Service is written in [Golang](https://golang.org/), Please make sure your ``GOPATH,GOROOT`` variables are configured properly 
+
+Follow the link above to install and configure Golang for your system
+
+Execute the following commands from the project directory to run the web service Backend on your system
+
+```bash
+go build main.go
+./main ulimit -n 120000
+```
+
+Once the service starts running 
+
+try visiting ``http://0.0.0.0:8080/redirect/test``
+
+Thank me Later :)
+
+NOTE:- If you are facing issues in configuration of ulimit for your MacOS please follow [this](http://blog.mact.me/2014/10/22/yosemite-upgrade-changes-open-file-limit) guideline  
+
+#### Unit Testing and Perf Testing
+For unit testing you can run the go test command and get the test coverage for the project 
+
+```bash
+go test ./... -cover
+```
+As we can see that the logic and and utils are fairly well covered with unit Test Cases 
+![](resources/images/test_coverage.png)
+
+
+## Design
+
+
+## Contributing
+
+
+
+
+
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
