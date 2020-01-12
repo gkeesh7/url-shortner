@@ -144,6 +144,21 @@ The JSON response format for the above Curl would  be like
 }
 ```
 
+By Default all links expire 24 hours from creation time but, if you want a custom expiry time you can provide that as well with an additional ``expiry`` field of Date type in the json
+
+```bash
+curl -X POST \
+  http://localhost:8080/shorten \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+	"url":"https://www.google.com/search?q=do+a+barrel+roll",
+	"request_id":"asdlfjhlaksdjffsajkflkjghjasfflkg",
+        "expiry": "2020-01-12T19:45:51.295175+05:30"
+}'
+```
+
+
 To get URL opening stats (top 10 most frequently visited URLs in the last 24 hours in descending order)
 ````bash
 curl -X GET \
@@ -173,13 +188,42 @@ The JSON response format for the above Curl would be like
 ```
 
 ## Design
+#### Overview
+1. The overall backend design is fairly simple we have a Golang based backend running an http server.
+2. The backend connects to a persistent storage in our case MYSQL where all CRUD operations happen.
+3. The URL expiry logic is handled by a cron which resides along with the application backend and runs periodically.
 
+#### Architecture diagram
+
+
+#### Design choices and justifications
+Influencing factors for taking these design decisions are 
+1. The requirements for scale (shortening thousands of URLs in a second).
+2. The requirement for providing statistics on URL visits (extrapolated this to more complex analytical requirements in the future).
+3. Implementation of an expiration logic to expire URLs.
+4. Developer familiarity.
+5. Time constraint (As this is a weekend project :) 
+
+Why Golang was used as the Backend Language ?
+1. Highly scalable.
+2. Less amount of boiler plate code.
+3. Inbuilt concurrency primitives such as go routines and channels.
+4. Inbuilt monitoring and profiling tools like pprof (which has been integrated to provide cpu,memory metrics etc.)
+
+Why Database was chosen to be MYSQL ?
+1. Relational Database.
+2. Can perform joins etc if any complex statistical or analytical requirements and use-cases come up.
+3. Fairly scalable.
+
+Why use Cron for expiry ?
+1. Automated and Periodic in nature.
+2. Fire and forget.
 
 ## Contributing
-Pull requests are welcome a few features that are in the TODO pipeline include 
+Pull requests are welcome for a few features that are in the TODO pipeline 
 1. Addition of Cache to reduce redirection search time
-2. Implementation of a distributed lock before execution of delete queries by Cron
-3. Addition of metrics like graphite etc.
+2. Implementation of a distributed lock before execution of delete queries by Cron.
+3. Addition of metrics using graphite etc.
 4. Making the Backend more configurable.
 
 
