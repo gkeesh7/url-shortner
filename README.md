@@ -9,7 +9,7 @@ Features include
 
 ## Installation and Getting Started
 
-Clone this repo to your local machine using 
+Clone this repo to your ``$GOPATH/src`` on your local machine using 
 ```bash
 git clone https://github.com/gkeesh7/url-shortner.git
 ``` 
