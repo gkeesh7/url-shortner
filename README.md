@@ -8,6 +8,12 @@ Features include
 4. Fairly scalable backend that can shorten thousands of Long URLs a second (documented in perf test).
 
 ## Installation and Getting Started
+
+Clone this repo to your local machine using 
+```bash
+git clone https://github.com/gkeesh7/url-shortner.git
+``` 
+
 #### Package management
 The project uses [Glide](https://glide.sh/) for Package Management.
 
@@ -70,6 +76,9 @@ Please do remember to make changes into
 
 The default DSN given is 
 ``"root:@tcp(localhost:3306)/url_shortner?parseTime=true"``
+
+The DSN pattern is 
+``"username:password@tcp(localhost:3306)/database_name?parseTime=true"``
 
 ####  Running the Web Service
 Since the Service is written in [Golang](https://golang.org/), Please make sure your ``GOPATH,GOROOT`` variables are configured properly 
@@ -197,25 +206,25 @@ The JSON response format for the above Curl would be like
 
 
 #### Design choices and justifications
-Influencing factors for taking these design decisions are 
+##### Influencing factors for taking these design decisions are 
 1. The requirements for scale (shortening thousands of URLs in a second).
 2. The requirement for providing statistics on URL visits (extrapolated this to more complex analytical requirements in the future).
 3. Implementation of an expiration logic to expire URLs.
 4. Developer familiarity.
 5. Time constraint (As this is a weekend project :) 
 
-Why Golang was used as the Backend Language ?
+##### Why Golang was used as the Backend Language ?
 1. Highly scalable.
 2. Less amount of boiler plate code.
 3. Inbuilt concurrency primitives such as go routines and channels.
 4. Inbuilt monitoring and profiling tools like pprof (which has been integrated to provide cpu,memory metrics etc.)
 
-Why Database was chosen to be MYSQL ?
+##### Why Database was chosen to be MYSQL ?
 1. Relational Database.
 2. Can perform joins etc if any complex statistical or analytical requirements and use-cases come up.
 3. Fairly scalable.
 
-Why use Cron for expiry ?
+##### Why use Cron for expiry ?
 1. Automated and Periodic in nature.
 2. Fire and forget.
 
