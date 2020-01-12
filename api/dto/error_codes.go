@@ -31,6 +31,7 @@ var MapErrorCodeToErrorMessageTemplate = map[ErrorCode]string{
 	IllegalRequest:      "Some required fields are missing from the object %v",
 }
 
+// GenerateError Creates a Custom Error with Error code and Message
 func GenerateError(code ErrorCode, args ...string) *Error {
 	return &Error{
 		Code:    code,

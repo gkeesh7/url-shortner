@@ -7,6 +7,7 @@ import (
 	"url-shortner/logic"
 )
 
+// RedirectRequest accepts a shortened URL and redirects it to the Long URL saved in the DataStore
 func RedirectRequest(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	ShortURLId := logic.ExtractURLIdFromRequest(r)

@@ -1,5 +1,6 @@
 package dto
 
+// Error defines the custom error
 type Error struct {
 	Code    ErrorCode `json:"code"`
 	Message string    `json:"message"`

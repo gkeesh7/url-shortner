@@ -7,6 +7,7 @@ import (
 	"url-shortner/logic"
 )
 
+// ShortenURL takes the long URL from the http request and converts it to shorter alias in the response
 func ShortenURL(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	//Extract Request Dto from http Request
