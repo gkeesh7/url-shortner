@@ -204,6 +204,7 @@ The JSON response format for the above Curl would be like
 
 #### Architecture diagram
 
+![](resources/images/URL-Shortner.png)
 
 #### Design choices and justifications
 ##### Influencing factors for taking these design decisions are 
