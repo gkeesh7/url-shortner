@@ -235,6 +235,7 @@ Pull requests are welcome for a few features that are in the TODO pipeline
 2. Implementation of a distributed lock before execution of delete queries by Cron.
 3. Addition of metrics using graphite etc.
 4. Making the Backend more configurable.
+5. Dockerization of the service.
 
 
 
