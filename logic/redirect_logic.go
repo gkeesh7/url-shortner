@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"url-shortner/api/dto"
+	"url-shortner/caching"
 	"url-shortner/storage/dao"
 )
 
@@ -17,6 +18,10 @@ func ExtractURLIdFromRequest(r *http.Request) string {
 }
 
 func FindLongURLFromDataStore(ctx context.Context, ShortURLId string) (string, *dto.Error) {
+	cachedURL, errCache := caching.GetURLFromCache(ShortURLId)
+	if errCache == nil && len(cachedURL) != 0 {
+		return cachedURL, nil
+	}
 	conditions := createFilters(ShortURLId)
 	redirect, err := dao.RedirectionGormImplObj.FindOne(ctx, conditions)
 	if err != nil {
@@ -27,6 +32,7 @@ func FindLongURLFromDataStore(ctx context.Context, ShortURLId string) (string, *
 		log.Print("No data found for url_id = " + ShortURLId)
 		return "", dto.GenerateError(dto.RecordNotFound, "No data found for url_id = "+ShortURLId)
 	}
+	go caching.SetURLIntoCache(ShortURLId, redirect.URL)
 	return redirect.URL, nil
 }
 
