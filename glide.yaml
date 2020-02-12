@@ -26,3 +26,5 @@ import:
     repo: git@github.com:DATA-DOG/go-sqlmock
     version: master
   - package: github.com/stretchr/objx
+  - package: github.com/gomodule/redigo
+    version: master

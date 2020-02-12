@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 	"url-shortner/api/dto"
+	"url-shortner/caching"
 	"url-shortner/storage/dao"
 	"url-shortner/storage/dao/mocks"
 	"url-shortner/storage/gormmodel"
@@ -27,13 +28,18 @@ func Test_FindLongURL_WhenDatabaseErrors_ReturnAnError(t *testing.T) {
 
 	//Save existing behaviour
 	save := dao.RedirectionGormImplObj
+	save1 := caching.GetURLFromCache
 
 	//Assign mock behaviour to Actual behaviour
 	dao.RedirectionGormImplObj = &mockDao
+	caching.GetURLFromCache = func(shortURLID string) (s string, err error) {
+		return "", fmt.Errorf("sorry mocked cache error")
+	}
 
 	//TearDown Reset to old behaviour after the test
 	defer func() {
 		dao.RedirectionGormImplObj = save
+		caching.GetURLFromCache = save1
 	}()
 
 	//call the function to be tested
@@ -52,13 +58,18 @@ func Test_FindLongURL_WhenDatabaseReturnsNil_ReturnsRecordNotFound(t *testing.T)
 
 	//Save existing behaviour
 	save := dao.RedirectionGormImplObj
+	save1 := caching.GetURLFromCache
 
 	//Assign mock behaviour to Actual behaviour
 	dao.RedirectionGormImplObj = &mockDao
+	caching.GetURLFromCache = func(shortURLID string) (s string, err error) {
+		return "", fmt.Errorf("sorry mocked cache error")
+	}
 
 	//TearDown Reset to old behaviour after the test
 	defer func() {
 		dao.RedirectionGormImplObj = save
+		caching.GetURLFromCache = save1
 	}()
 
 	//Call the function to be tested
@@ -76,7 +87,7 @@ func Test_FindLongURL_WhenEntryFound_ReturnsTheURL(t *testing.T) {
 	mockDao.On("FindOne", mock.Anything, mock.Anything).Return(&gormmodel.Redirection{
 		ID:        int32(1),
 		UrlId:     "abcdef",
-		URL:       "www.google.com",
+		URL:       "https://www.google.com",
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 		Expiry:    time.Now(),
@@ -98,5 +109,5 @@ func Test_FindLongURL_WhenEntryFound_ReturnsTheURL(t *testing.T) {
 
 	//assert the results
 	assert.Nil(t, err)
-	assert.Equal(t, str, "www.google.com")
+	assert.Equal(t, str, "https://www.google.com")
 }

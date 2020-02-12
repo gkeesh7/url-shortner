@@ -9,7 +9,6 @@ type URLShortenRequest struct {
 	Expiry    *time.Time `json:"expiry"`
 }
 
-
 // URLShortenResponse response for the Shorten API
 type URLShortenResponse struct {
 	RequestID   string    `json:"request_id"`
