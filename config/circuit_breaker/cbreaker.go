@@ -13,13 +13,13 @@ func init() {
 	InitializeHystrix()
 }
 
-func InitializeHystrix()  {
-	for _,element := range hystrixCommands{
-		hystrix.ConfigureCommand(element,hystrix.CommandConfig{
-			Timeout:                100,
-			MaxConcurrentRequests:  2000,
-			SleepWindow:            5000,
-			ErrorPercentThreshold:  25,
+func InitializeHystrix() {
+	for _, element := range hystrixCommands {
+		hystrix.ConfigureCommand(element, hystrix.CommandConfig{
+			Timeout:               100,
+			MaxConcurrentRequests: 2000,
+			SleepWindow:           5000,
+			ErrorPercentThreshold: 25,
 		})
 	}
 }
