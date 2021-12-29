@@ -21,6 +21,3 @@ RUN go env -w GO111MODULE=off
 WORKDIR $PKG_PATH
 EXPOSE 8080
 CMD ["go", "run", "main.go"]
-
-
-
