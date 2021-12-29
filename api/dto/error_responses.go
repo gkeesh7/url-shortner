@@ -1,5 +1,7 @@
 package dto
 
+import "fmt"
+
 // Error defines the custom error
 type Error struct {
 	Code    ErrorCode `json:"code"`
@@ -13,5 +15,5 @@ func NewError(code ErrorCode, msg string) *Error {
 
 // Error returns the error message associated with the error.
 func (err *Error) Error() string {
-	return string(err.Code) + ":" + err.Message
+	return fmt.Sprint(err.Code) + ":" + err.Message
 }
