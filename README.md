@@ -92,6 +92,18 @@ go build main.go
 ./main ulimit -n 120000
 ```
 
+To build the docker image and run the docker container.
+1. First naviate to the project directory and execute the following commands
+
+```bash
+#To build the image
+docker build -t url-shortner .
+
+#To run the image
+docker run -d -p 8080:8080 --name url-shortner  url-shortner 
+```
+
+
 Once the service starts running 
 
 try visiting ``http://0.0.0.0:8080/redirect/test``
