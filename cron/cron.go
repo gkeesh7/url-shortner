@@ -22,12 +22,12 @@ func Start() error {
 	log.Print("Starting Cron.....")
 
 	//TODO: Make this frequency configurable
-	cronFrequency := "*/5 * * * *"
+	cronFrequency := "0 0/5 * * * ?"
 
 	expressions := GetExpression(cronFrequency)
 
 	for _, expression := range expressions {
-		_, err := crn.AddFunc(expression, deleteExpiredURLs)
+		err := crn.AddFunc(expression, deleteExpiredURLs)
 		if err != nil {
 			log.Printf("Couldn't add deletion of expired URLs into cron with Expression %v", err.Error())
 			return err
