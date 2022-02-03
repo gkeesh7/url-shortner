@@ -27,6 +27,5 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-interrupt
-
 	concurrencyutils.WaitChannels(server.Stop(), cron.Stop())
 }
