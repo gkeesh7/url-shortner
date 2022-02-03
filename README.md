@@ -15,15 +15,12 @@ git clone https://github.com/gkeesh7/url-shortner.git
 ``` 
 
 #### Package management
-The project uses [Glide](https://glide.sh/) for Package Management.
-
-Please follow the link in order install and configure glide for your system
-
-After you're done installing Glide execute the glide up command to get the required packages once you're in the url-shortner directory 
+The project uses Go Modules now earlier it used to rely on glide
 
 ```bash
-glide up
-```
+go build main.go
+````
+
 #### Database Schema Creation
 The application uses a [Mysql](https://dev.mysql.com/downloads/installer/) based Persistent Data Store and connects to it once booting up. 
 
@@ -112,8 +109,22 @@ Thank me Later :)
 
 NOTE:- If you are facing issues in configuration of ulimit for your MacOS please follow [this](http://blog.mact.me/2014/10/22/yosemite-upgrade-changes-open-file-limit) guideline  
 
+#### Deploying to Kubernetes
+The app can be deployed to kubernetes by running the following commands
+```bash
+##Create the Deployment
+kubectl apply -f deployment.yaml
+
+##Create the Service
+kubectl apply -f service.yaml
+
+##Port forward the 8080
+kubectl port-forward deployment/url-shortner-deployment 8080:8080
+```
+The guide to make sure that the docker image gets built and pulled locally is [here](https://stackoverflow.com/questions/42564058/how-to-use-local-docker-images-with-minikube)
+
 #### Unit Testing and Perf Testing
-For unit testing you can run the go test command and get the test coverage for the project 
+For unit testing you can run the go test command and get the test coverage for the project
 
 ```bash
 go test ./... -cover
