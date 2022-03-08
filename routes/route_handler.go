@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http/pprof"
 	"url-shortner/api"
 )
@@ -27,4 +28,7 @@ func UrlShortnerAPIs(router *mux.Router) {
 	router.HandleFunc("/debug/pprof/profile", pprof.Profile)
 	router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 	router.HandleFunc("/debug/pprof/trace", pprof.Trace)
+
+	//Metrics apis from prometheus
+	router.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
 }
