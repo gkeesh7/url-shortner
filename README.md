@@ -100,6 +100,11 @@ docker build -t url-shortner .
 docker run -d -p 8080:8080 --name url-shortner  url-shortner 
 ```
 
+If you want to run the service along with monitoring using prometheus and grafana just execute
+```bash
+docker-compose up
+```
+
 
 Once the service starts running 
 
