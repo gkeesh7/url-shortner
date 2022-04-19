@@ -22,6 +22,8 @@ func UrlShortnerAPIs(router *mux.Router) {
 	//Stats API's for URL clicks
 	router.HandleFunc("/stats", api.Stats).Methods("GET")
 
+	router.HandleFunc("/sort", api.Sort).Methods("POST")
+
 	//PProf apis
 	router.HandleFunc("/debug/pprof/", pprof.Index)
 	router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
