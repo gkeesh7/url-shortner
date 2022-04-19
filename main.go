@@ -130,7 +130,9 @@ func main() {
 		PatientMap:     map[string]Patient{},
 	}
 	err := scheduler.AddAppointment("123", time.Date(2022, 04, 19, 5, 30, 0, 0, time.UTC))
-	fmt.Printf(err.Error())
+	if err != nil {
+		fmt.Printf(err.Error())
+	}
 	err = scheduler.AddAppointment("123", time.Date(2022, 04, 19, 5, 30, 0, 0, time.UTC))
 	fmt.Printf(err.Error())
 }
