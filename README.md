@@ -128,6 +128,11 @@ kubectl port-forward deployment/url-shortner-deployment 8080:8080
 ```
 The guide to make sure that the docker image gets built and pulled locally is [here](https://stackoverflow.com/questions/42564058/how-to-use-local-docker-images-with-minikube)
 
+For windows machines incase ```eval $(minikube docker-env)``` might not work so save the image to a tar file and put into minikube
+```
+docker image save -o image.tar my_image:tag
+minikube image load image.tar
+```
 #### Unit Testing and Perf Testing
 For unit testing you can run the go test command and get the test coverage for the project
 
