@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.16-alpine
+FROM golang:1.17-alpine
 
 RUN apk update
 RUN apk add git
@@ -10,7 +10,7 @@ ENV PKG_PATH=$GOPATH/src/$PKG_NAME
 WORKDIR $PKG_PATH
 
 COPY . $PKG_PATH
-RUN go env -w GO111MODULE=off
+RUN go mod download
 RUN go build main.go
 
 WORKDIR $PKG_PATH
