@@ -19,3 +19,14 @@ jobs:
           docker login --username gkeesh7 --password ${{ secrets.GH_PAT }} ghcr.io
           docker build . --file Dockerfile --tag ghcr.io/gkeesh7/url-shortner:latest
           docker push ghcr.io/gkeesh7/url-shortner:latest
+
+      - uses: sigstore/cosign-installer@main
+
+      - name: Write signing key to disk 
+        run: echo "${{ secrets.SIGNING_SECRET }}" > cosign.key
+
+      - name: Sign the image
+        run: |
+          cosign sign -key cosign.key ghcr.io/gkeesh7/url-shortner:latest
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
