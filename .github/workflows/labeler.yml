@@ -27,5 +27,6 @@ jobs:
             Note this PR might be rejected due to its size.
           github_api_url: 'https://api.github.com'
           ignore_file_deletions: 'true'
+          ignore_line_deletions: 'true'
           files_to_ignore: ''
 
